@@ -1,0 +1,52 @@
+﻿@model WebApplication1.Models.PersonaModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    @using (Html.BeginForm("Index", "Ajax", FormMethod.Post))
+    {
+        <label>Nombre : </label>
+        @Html.TextBoxFor(m => m.Name)
+
+        <input type="submit" id="btnSubmit" value="enviar datos por sumit" />
+    }
+    <br>
+    <input type="text" id="txtName" />
+    <input type="button" id="btnGet" value="enviar datos por ajax" />
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#btnGet").click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "/Ajax/AjaxMethod",
+                    data: '{name: "' + $("#txtName").val() + '" }',
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        alert("Hello: " + response.Name + " .\nCurrent Date and Time: " + response.Fecha);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
